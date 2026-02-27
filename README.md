@@ -1,4 +1,4 @@
-# TwinAligner.github.io
+# FreeArtGS.github.io
 
 This is the repository that contains source code for the [FreeArtGS website](https://freeartgs.github.io).
 
