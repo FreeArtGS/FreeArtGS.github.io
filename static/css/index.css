@@ -112,6 +112,20 @@ body {
     height: 100%;
 }
 
+.publication-video video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background: #000;
+}
+
+.video-caption {
+  margin-top: 0.5rem;
+}
+
 .publication-body img {
 }
 
