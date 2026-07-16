@@ -254,86 +254,69 @@
               <select id="video-group-select" onchange="updateVideos()">
                 <option value="group1">Part Segmentation Results</option>
                 <option value="group2">Reconstruction Results</option>
-                <option value="group3">Input Videos</option>
               </select>
             </div>
           </div>
         </div>
 
-        <div class="columns is-centered">
-          <div class="column">
-            <video id="video-0" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/100350/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="column">
-            <video id="video-1" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/102033/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="column">
-            <video id="video-2" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/103271/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-        </div>
-        <div class="columns is-centered">
-          <div class="column">
-            <video id="video-3" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/103828/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="column">
-            <video id="video-4" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/10567/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-          <div class="column">
-            <video id="video-5" width="100%" height="auto" controls>
-              <source src="./static/videos/visualization_videos/4552/segmentation_video.mp4" type="video/mp4">
-            </video>
-          </div>
-        </div>
+        <div id="video-grid" class="columns is-multiline is-centered"></div>
 
         <script>
-          // 在这里配置不同列表项对应的视频路径（每组6个视频）
+          const segmentationIds = [
+            "100109", "100113", "100309", "100319", "100350", "102033",
+            "102990", "103271", "103275", "103593", "103828", "103886",
+            "10546", "10567", "11052", "45132", "45135", "4552",
+            "4562", "4578", "48878"
+          ];
+          const reconstructionIds = [
+            "100109", "100113", "100309", "100319", "100350", "102033",
+            "102990", "103271", "103275", "103593", "103828", "103886",
+            "10546", "10567", "11052", "45132", "45135", "4552",
+            "4562", "4578", "48878"
+          ];
+          function videoPath(id, filename) {
+            return `./static/videos/visualization_videos/${id}/${filename}`;
+          }
+
           const videoGroups = {
-            'group1': [
-              "./static/videos/visualization_videos/100350/segmentation_video.mp4",
-              "./static/videos/visualization_videos/102033/segmentation_video.mp4",
-              "./static/videos/visualization_videos/103271/segmentation_video.mp4",
-              "./static/videos/visualization_videos/103828/segmentation_video.mp4",
-              "./static/videos/visualization_videos/10567/segmentation_video.mp4",
-              "./static/videos/visualization_videos/4552/segmentation_video.mp4"
-            ],
-            'group2': [
-              "./static/videos/visualization_videos/100350/render.mp4", 
-              "./static/videos/visualization_videos/102033/render.mp4", 
-              "./static/videos/visualization_videos/103271/render.mp4", 
-              "./static/videos/visualization_videos/103828/render.mp4", 
-              "./static/videos/visualization_videos/10567/render.mp4",
-              "./static/videos/visualization_videos/4552/render.mp4"
-            ],
-            'group3': [
-              "./static/videos/visualization_videos/100350/gt.mp4",
-              "./static/videos/visualization_videos/102033/gt.mp4",
-              "./static/videos/visualization_videos/103271/gt.mp4",
-              "./static/videos/visualization_videos/103828/gt.mp4",
-              "./static/videos/visualization_videos/10567/gt.mp4",
-              "./static/videos/visualization_videos/4552/gt.mp4"
-            ]
+            group1: segmentationIds.map((id) => ({ id, src: videoPath(id, "segmentation_video.mp4") })),
+            group2: reconstructionIds.map((id) => ({ id, src: videoPath(id, "render.mp4") }))
           };
 
           function updateVideos() {
             const select = document.getElementById("video-group-select");
+            const grid = document.getElementById("video-grid");
             const group = videoGroups[select.value];
-            for (let i = 0; i < 6; i++) {
-              const video = document.getElementById("video-" + i);
-              const source = video.querySelector("source");
-              source.src = group[i];
-              video.load(); // 重新加载视频源
-            }
+            grid.innerHTML = "";
+
+            group.forEach((item) => {
+              const column = document.createElement("div");
+              column.className = "column is-one-third-desktop is-half-tablet";
+
+              const video = document.createElement("video");
+              video.controls = true;
+              video.playsInline = true;
+              video.preload = "metadata";
+              video.style.width = "100%";
+              video.style.height = "auto";
+
+              const source = document.createElement("source");
+              source.src = item.src;
+              source.type = "video/mp4";
+              video.appendChild(source);
+
+              const caption = document.createElement("p");
+              caption.className = "is-size-7 has-text-grey";
+              caption.style.marginTop = "0.35rem";
+              caption.textContent = item.id;
+
+              column.appendChild(video);
+              column.appendChild(caption);
+              grid.appendChild(column);
+            });
           }
+
+          document.addEventListener("DOMContentLoaded", updateVideos);
         </script>
         <div class="content has-text-justified">
           <p>
