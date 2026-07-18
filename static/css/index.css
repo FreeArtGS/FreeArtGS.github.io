@@ -126,6 +126,28 @@ body {
   margin-top: 0.5rem;
 }
 
+.project-video-section {
+  padding-top: 1.5rem;
+  padding-bottom: 2rem;
+}
+
+.project-video-wrapper {
+  overflow: hidden;
+  width: 100%;
+  background: #000;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(10, 10, 10, 0.12);
+  line-height: 0;
+}
+
+.project-video-wrapper video {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
+  object-fit: contain;
+}
+
 .publication-body img {
 }
 
